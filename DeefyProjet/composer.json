@@ -1,0 +1,11 @@
+{
+    "name": "s3/deefyprojet",
+    "description": "le meilleur streaming audio de tout l'iut",
+    "type": "project",
+    "autoload": {
+    "psr-4": {
+    "deefyprojet\\conf\\" : "./conf",
+    "deefyprojet\\" : "./src/classes"
+    }
+    }
+   }
