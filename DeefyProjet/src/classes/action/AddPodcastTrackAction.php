@@ -50,7 +50,7 @@ class AddPodcastTrackAction extends Action{
             $artistePod = filter_var($_POST['artiste'] , FILTER_SANITIZE_SPECIAL_CHARS);
 
             $genrePod = filter_var($_POST['genre'] , FILTER_SANITIZE_SPECIAL_CHARS);
-            $filePathPod = filter_var($_POST['filePath'] , FILTER_SANITIZE_SPECIAL_CHARS);
+            //$filePathPod = filter_var($_POST['filePath'] , FILTER_SANITIZE_SPECIAL_CHARS);
 
 
             $upload_dir = 'audio/';
@@ -68,16 +68,13 @@ class AddPodcastTrackAction extends Action{
                 $dest = $upload_dir.$filename.'.mp3';
                 if (move_uploaded_file($tmp, $dest)) {
                     $html .= "Téléchargement terminé avec succès<br>";
+                    $filePathPod = $dest;
                 } else {
                     $html .= "Téléchargement non valide<br>";
                 }
             } else {
                 $html .= "Échec du téléchargement ou type non autorisé<br>";
             }
-
-
-
-            $filePathPod = $dest;
 
             $_SESSION['monPodcastTrack'] = new TK\PodcastTrack(
                 $titrePod,
