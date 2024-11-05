@@ -13,6 +13,7 @@ class AddPlaylistAction extends Action{
         if (isset($_SESSION['userId'])){
             if ($this->http_method === 'GET'){ 
                 return <<<END
+                        <h2>Ajouter une playlist</h2>
                         <form method="POST" action="?action=add-playlist">
                         <input type="text" name="nom">
                         <button type="submit"> Ajouter ma playlist</button>
@@ -28,7 +29,7 @@ class AddPlaylistAction extends Action{
                 $_SESSION['maplaylist'] = $pl;
 
                 $r = DeefyRepository::getInstance();
-                $pl = $r->saveEmptyPlaylist($pl);
+                $pl = $r->saveEmptyPlaylist($pl, $_SESSION['userId']);
 
                 $rendu = new RD\AudioListRenderer($_SESSION['maplaylist']);
                 
@@ -37,7 +38,7 @@ class AddPlaylistAction extends Action{
                 return $html;
             }
         }else{
-            return "<div>Vous devez être connecter</div>";
+            return "<div>Vous devez être connecter pour ajouter une playlist</div>";
         }
     }
 

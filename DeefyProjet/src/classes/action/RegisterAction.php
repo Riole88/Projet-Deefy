@@ -21,14 +21,13 @@ class RegisterAction extends Action{
             END;
         }
         else { //$this->http_method === 'POST'
-            var_dump($_POST);
 
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL); 
             $mdp = filter_var($_POST['mdp'], FILTER_SANITIZE_EMAIL);
             
             AuthnProvider::register($email, $mdp);
 
-            return '<div>Se connecter dans le cas POST</div>';
+            return '<div>Vous êtes inscrit, veuillez vous connecter pour la suite</div>';
         }
     }
 

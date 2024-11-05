@@ -59,12 +59,15 @@ class DeefyRepository{
     }
 
 
-    public function saveEmptyPlaylist(Playlist $pl): Playlist {
+    public function saveEmptyPlaylist(Playlist $pl, int $idUser): Playlist {
         $stmt = $this->pdo->prepare("INSERT INTO playlist (nom) VALUES (:nom)");
         $stmt->bindParam(':nom', $pl->getNom(), \PDO::PARAM_STR);
         $stmt->execute();
 
         $lastInsertId = (int)$this->pdo->lastInsertId();
+
+        $stmt2 = $this->pdo->prepare("INSERT INTO user2playlist (id_user, id_pl)  VALUES (?, ?)");
+        $stmt2->execute([$idUser, $lastInsertId]);
 
         return $pl;
     }

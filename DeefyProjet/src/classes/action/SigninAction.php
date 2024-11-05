@@ -12,6 +12,7 @@ class SigninAction extends Action{
     public function execute () : string{
         if ($this->http_method === 'GET'){ 
             return <<<END
+                    <h2>Se connecter</h2>
                     <form method="POST" action="?action=signin">
                     Email: <input type='text' name='email'>
                     Mdp: <input type='text' name='mdp'>
@@ -20,15 +21,16 @@ class SigninAction extends Action{
             END;
         }
         else { //$this->http_method === 'POST'
-            
-            var_dump($_POST);
 
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL); 
             $mdp = $_POST['mdp'];
             
             AuthnProvider::signin($email, $mdp);
 
-            return '<div>Se connecter dans le cas POST</div>';
+            $html = '<div>Vous êtes connecter en tant que </div>';
+            $html .= $email;
+
+            return $html;
         }
     }
 
