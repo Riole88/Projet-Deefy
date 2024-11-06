@@ -27,7 +27,7 @@ class SigninAction extends Action{
             
             AuthnProvider::signin($email, $mdp);
 
-            $html = '<div>Vous êtes connecter en tant que </div>';
+            $html = '<div>Vous êtes connecté en tant que </div>';
             $html .= $email;
 
             return $html;

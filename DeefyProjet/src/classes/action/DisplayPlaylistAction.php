@@ -54,7 +54,7 @@ class DisplayPlaylistAction extends Action{
                 }
             }
         }else{
-            return "<div>Vous devez être connecter</div>";
+            return "<div>Vous devez être connecté</div>";
         }
     }
 }

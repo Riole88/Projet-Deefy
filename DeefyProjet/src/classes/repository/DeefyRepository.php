@@ -49,10 +49,11 @@ class DeefyRepository{
 
     public function findPlaylistById(int $id): ?Playlist {
         $stmt = self::$instance->pdo->prepare('SELECT id, nom FROM playlist WHERE id = ?');
-        $stmt->execute([$id]);
-        $data = $stmt->fetch();
+        $bool = $stmt->execute([$id]);
+        
 
-        if ($data) {
+        if ($bool) {
+            $data = $stmt->fetch();
             $playlist = new Playlist($data['nom']);
         } 
         return $playlist;
@@ -72,14 +73,60 @@ class DeefyRepository{
         return $pl;
     }
 
+    public function saveAlbumTrack(AlbumTrack $t,int $idPl):bool{
+
+        $pl = $this->findPlaylistById($idPl);
+
+        if(!isset($pl)){
+            return false;
+        }else{
+            $stmt = $this->pdo->prepare("INSERT INTO track (titre, genre, duree, filename, type, artiste_album, titre_album, numero_album)  VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$t->title, $t->genre, $t->durationSec, $t->filePath, "A", $t->artist, $t->title, (int)1]);
+
+            $lastInsertId = (int)$this->pdo->lastInsertId();
+
+            $stmt3 = $this->pdo->prepare("SELECT no_piste_dans_liste FROM playlist2track WHERE id_pl = ?");
+            $stmt3->execute([$idPl]);
+            $nbPiste = $stmt3->fetchAll();
+            
+
+            $stmt2 = $this->pdo->prepare("INSERT INTO playlist2track (id_pl, id_track, no_piste_dans_liste)  VALUES (?, ?, ?)");
+            $stmt2->execute([$idPl, $lastInsertId,count($nbPiste)+1]);
+            
+            return true;
+        }
+
+    }
+
+    public function savePodcastTrack(PodcastTrack $t, int $idPl):bool{
+
+        $pl = $this->findPlaylistById($idPl);
+        if(!isset($pl)){
+            return false;
+        }else{
+            $stmt = $this->pdo->prepare("INSERT INTO track (titre, genre, duree, filename, type, auteur_podcast)  VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$t->title, $t->genre, $t->durationSec, $t->filePath, "P", $t->artist]);
+
+            $lastInsertId = (int)$this->pdo->lastInsertId();
+
+            $stmt3 = $this->pdo->prepare("SELECT no_piste_dans_liste FROM playlist2track WHERE id_pl = ?");
+            $stmt3->execute([$idPl]);
+            $nbPiste = $stmt3->fetchAll();
+            
+
+            $stmt2 = $this->pdo->prepare("INSERT INTO playlist2track (id_pl, id_track, no_piste_dans_liste)  VALUES (?, ?, ?)");
+            $stmt2->execute([$idPl, $lastInsertId,count($nbPiste)+1]);
+            
+            return true;
+        }
+    }
+
 
     public function getPasswd(string $email): string {
         $stmt = self::$instance->pdo->prepare('SELECT passwd FROM user WHERE email = ?');
         $stmt->execute([$email]);
         $res = $stmt ->fetchAll();
         $mdp = $res[0]['passwd'];
-
-        var_dump($stmt->fetchAll());
 
         return $mdp;
     }

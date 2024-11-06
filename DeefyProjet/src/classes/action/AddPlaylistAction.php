@@ -38,7 +38,7 @@ class AddPlaylistAction extends Action{
                 return $html;
             }
         }else{
-            return "<div>Vous devez être connecter pour ajouter une playlist</div>";
+            return "<div>Vous devez être connecté pour ajouter une playlist</div>";
         }
     }
 
