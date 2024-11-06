@@ -6,11 +6,8 @@ class DefaultAction extends Action{
 
     public function execute () : string{
         if ($this->http_method === 'GET'){
-            return "<div>Affichage de la page d'accueil dans le cas GET</div>
-                    <form action='.' method='POST'>
-                        <input type='text' name='nom'>
-                        <input type='submit' value='Envoyer le formulaire'>
-                    </form>
+            return "<div>Bienvenue dans l'app Deefy, veuillez vous connecter pour voir, ajouter des playlist et ajouter des pistes</div>
+                    
             ";
         }
         else {
